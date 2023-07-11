@@ -5,45 +5,7 @@
 ##########################################################################################
 
 ##########################################################################################
-################################### Decide version of CMake and use appropriate fn calls
-set     ( PRODUCE_PYTHON_BINDINGS   "0"                                                   )
-set     ( USE_MODERN_PATHS          "0"                                                   )
-
-if      ( ${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} LESS 6 )
-	message ( FATAL_ERROR "Your CMake version is less than 2.6. ProSHADE requires a newer version and cannot be installed using the current version. Please update your CMake and try again." )
-endif   ( ${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} LESS 6 )
-
-if      ( ${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} GREATER 5 )
-	if    ( ${CMAKE_MINOR_VERSION} GREATER 7 )
-		message ( "Your CMake version is lower than recommended (3.4). This will result in no Python language bindings. Please consider updating your CMake." )
-		set ( PRODUCE_PYTHON_BINDINGS   "0"                                               )
-		set ( USE_MODERN_PATHS          "1"                                               )
-	else  ( ${CMAKE_MINOR_VERSION} GREATER 7 )
-		message ( "Your CMake version is lower than recommended (3.4). This will result in no Python language bindings and slower compilation. Please consider updating your CMake." )
-		set ( PRODUCE_PYTHON_BINDINGS   "0"                                               )
-		set ( USE_MODERN_PATHS          "0"                                               )
-	endif ( ${CMAKE_MINOR_VERSION} GREATER 7 )
-endif   ( ${CMAKE_MAJOR_VERSION} EQUAL 2 AND ${CMAKE_MINOR_VERSION} GREATER 5 )
-
-if      ( ${CMAKE_MAJOR_VERSION} GREATER 2 )
-	if    ( ${CMAKE_MINOR_VERSION} LESS 4 )
-		message ( "Your CMake version is lower than recommended (3.4). This will result in no Python language bindings. Please consider updating your CMake." )
-		set ( PRODUCE_PYTHON_BINDINGS   "0"                                               )
-		set ( USE_MODERN_PATHS          "1"                                               )
-	else  ( ${CMAKE_MINOR_VERSION} LESS 4 )
-		message ( "Your CMake version is at least the recommended version. Allowing fast build and Python language binding to be created." )
-		set ( PRODUCE_PYTHON_BINDINGS   "1"                                               )
-		set ( USE_MODERN_PATHS          "1"                                               )
-	endif ( ${CMAKE_MINOR_VERSION} LESS 4 )
-endif   ( ${CMAKE_MAJOR_VERSION} GREATER 2 )
-
-##########################################################################################
-################################### Set the correct required version
-if      ( ${PRODUCE_PYTHON_BINDINGS} MATCHES 1 )
-	cmake_minimum_required  ( VERSION 3.4                                                 )
-else    ( ${PRODUCE_PYTHON_BINDINGS} MATCHES 1 )
-	cmake_minimum_required  ( VERSION 2.6                                                 )
-endif   ( ${PRODUCE_PYTHON_BINDINGS} MATCHES 1 )
+cmake_minimum_required  ( VERSION 3.4 )
 
 ##########################################################################################
 ################################### Set project name
@@ -323,35 +285,21 @@ message              ( STATUS "Installation is set to       : " ${MY_INSTALL_LOC
 
 ##########################################################################################
 ################################### Build the OBJECTS
-if    ( ${USE_MODERN_PATHS} MATCHES 1 )
-	add_subdirectory ( ${CMAKE_SOURCE_DIR}/cmake/sources                                  )
-	set              ( OBJS $<TARGET_OBJECTS:compileObjs> CACHE INTERNAL "ProSHADE objects" )
-endif ( ${USE_MODERN_PATHS} MATCHES 1 )
+add_subdirectory ( ${CMAKE_SOURCE_DIR}/cmake/sources                                  )
+set              ( OBJS $<TARGET_OBJECTS:compileObjs> CACHE INTERNAL "ProSHADE objects" )
 
 ##########################################################################################
 ################################### Link executable
-if     ( ${USE_MODERN_PATHS} MATCHES 1 )
-	add_subdirectory ( ${CMAKE_SOURCE_DIR}/cmake/bin                                      )
-elseif ( ${USE_MODERN_PATHS} MATCHES 0 ) 
-	include          ( ${CMAKE_SOURCE_DIR}/cmake/bin/bin.cmake                            )
-endif  ( ${USE_MODERN_PATHS} MATCHES 1 )
+add_subdirectory ( ${CMAKE_SOURCE_DIR}/cmake/bin                                      )
 
 ##########################################################################################
 ################################### Link library
-if     ( ${USE_MODERN_PATHS} MATCHES 1 )
-	add_subdirectory ( ${CMAKE_SOURCE_DIR}/cmake/lib                                      )
-elseif ( ${USE_MODERN_PATHS} MATCHES 0 ) 
-	include          ( ${CMAKE_SOURCE_DIR}/cmake/lib/lib.cmake                            )
-endif  ( ${USE_MODERN_PATHS} MATCHES 1 )
+add_subdirectory ( ${CMAKE_SOURCE_DIR}/cmake/lib                                      )
 
 ##########################################################################################
 ################################### Build python module using PyBind11
 if     ( BUILD_PYTHON )
-	if     ( ${PRODUCE_PYTHON_BINDINGS} MATCHES 1 )
-		add_subdirectory   ( ${CMAKE_SOURCE_DIR}/cmake/python                             )
-	else   ( ${PRODUCE_PYTHON_BINDINGS} MATCHES 1 )
-		message            ( ERROR "This CMake version does not allow building the python module - please consider updating your CMake to at least version 3.4 if you want the python module build." )
-	endif  ( ${PRODUCE_PYTHON_BINDINGS} MATCHES 1 )
+	add_subdirectory   ( ${CMAKE_SOURCE_DIR}/cmake/python                             )
 else   ( BUILD_PYTHON )
 	message                ( STATUS "Will not attempt to build the python module."        )
 endif  ( BUILD_PYTHON )
