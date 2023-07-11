@@ -10,20 +10,20 @@ add_library             ( ${PROJECT_NAME}_LIB SHARED ${OBJS}                    
 
 ##########################################################################################
 ### Add and link the dependencies
-add_dependencies        ( ${PROJECT_NAME}_LIB gemmi_lib                                   )
 add_dependencies        ( ${PROJECT_NAME}_LIB soft2_lib                                   )
+target_link_libraries   ( ${PROJECT_NAME}_LIB PRIVATE gemmi::gemmi_cpp                    )
 
 if     ( "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows"  )
-	target_link_libraries   ( ${PROJECT_NAME}_LIB zlib                                    )
-	target_link_libraries   ( ${PROJECT_NAME}_LIB ${CMAKE_SOURCE_DIR}/winLibs/x64/SOFT2/soft2.lib )
-	target_link_libraries   ( ${PROJECT_NAME}_LIB ${CMAKE_SOURCE_DIR}/winLibs/x64/FFTW3/libfftw3-3.lib )
-	target_link_libraries   ( ${PROJECT_NAME}_LIB ${CMAKE_SOURCE_DIR}/winLibs/x64/LAPACK/liblapack.dll.a )
-	target_link_libraries   ( ${PROJECT_NAME}_LIB ${CMAKE_SOURCE_DIR}/winLibs/x64/LAPACK/libblas.dll.a )
+	target_link_libraries   ( ${PROJECT_NAME}_LIB PRIVATE zlib                            )
+	target_link_libraries   ( ${PROJECT_NAME}_LIB PRIVATE ${CMAKE_SOURCE_DIR}/winLibs/x64/SOFT2/soft2.lib )
+	target_link_libraries   ( ${PROJECT_NAME}_LIB PRIVATE ${CMAKE_SOURCE_DIR}/winLibs/x64/FFTW3/libfftw3-3.lib )
+	target_link_libraries   ( ${PROJECT_NAME}_LIB PRIVATE ${CMAKE_SOURCE_DIR}/winLibs/x64/LAPACK/liblapack.dll.a )
+	target_link_libraries   ( ${PROJECT_NAME}_LIB PRIVATE ${CMAKE_SOURCE_DIR}/winLibs/x64/LAPACK/libblas.dll.a )
 else   ( "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows"  )
-	target_link_libraries   ( ${PROJECT_NAME}_LIB z                                       )
-	target_link_libraries   ( ${PROJECT_NAME}_LIB ${CMAKE_SOURCE_DIR}/extern/soft-2.0/libsoft1.a )
-	target_link_libraries   ( ${PROJECT_NAME}_LIB fftw3                                   )
-	target_link_libraries   ( ${PROJECT_NAME}_LIB lapack blas                             )
+	target_link_libraries   ( ${PROJECT_NAME}_LIB PRIVATE z                               )
+	target_link_libraries   ( ${PROJECT_NAME}_LIB PRIVATE ${CMAKE_SOURCE_DIR}/extern/soft-2.0/libsoft1.a )
+	target_link_libraries   ( ${PROJECT_NAME}_LIB PRIVATE fftw3                           )
+	target_link_libraries   ( ${PROJECT_NAME}_LIB PRIVATE lapack blas                     )
 endif  ( "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows"  )
 
 

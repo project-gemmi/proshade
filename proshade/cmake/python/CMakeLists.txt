@@ -14,9 +14,9 @@ pybind11_add_module     ( py${PROJECT_NAME} MODULE ${CMAKE_SOURCE_DIR}/src/pytho
 
 ##########################################################################################
 ################################### Add and link the dependencies
-add_dependencies        ( py${PROJECT_NAME} gemmi_lib                                     )
 add_dependencies        ( py${PROJECT_NAME} soft2_lib                                     )
 add_dependencies        ( py${PROJECT_NAME} ${PROJECT_NAME}_LIB                           )
+target_link_libraries   ( py${PROJECT_NAME} PRIVATE gemmi::gemmi_cpp                      )
 
 if     ( "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows"  )
 	target_link_libraries   ( py${PROJECT_NAME} PRIVATE zlib                              )
@@ -36,7 +36,6 @@ endif  ( "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows"  )
 ################################### Include all the required files
 include_directories     ( ${CMAKE_SOURCE_DIR}/extern/pybind11/include                     )
 include_directories     ( ${CMAKE_SOURCE_DIR}/src/proshade                                )
-include_directories     ( ${CMAKE_SOURCE_DIR}/extern/gemmi                                )
 include_directories     ( ${CMAKE_SOURCE_DIR}/extern                                      )
 
 ##########################################################################################

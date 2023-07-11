@@ -101,35 +101,11 @@ endif  ( CYGWIN )
 ##########################################################################################
 ################################### Set targets for dependency installation from supplied sources
 
-### GEMMI
-if    ( "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows"  )
-	add_custom_command (
-   		OUTPUT ${PROJECT_SOURCE_DIR}/extern/buildGEMMI
-   		COMMAND rmdir "gemmi" /s /q
-   		COMMAND git clone https://github.com/project-gemmi/gemmi.git --quiet
-   		COMMAND type nul > ${PROJECT_SOURCE_DIR}/extern/buildGEMMI
-   		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/extern
-	)
-else  ( "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows"  )
-	add_custom_command (
-   		OUTPUT ${PROJECT_SOURCE_DIR}/extern/buildGEMMI
-   		COMMAND rm -fr ./gemmi
-   		COMMAND git clone https://github.com/project-gemmi/gemmi.git --quiet
-   		COMMAND touch ${PROJECT_SOURCE_DIR}/extern/buildGEMMI
-   		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/extern
-	)
-endif ( "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows"  )
-
-add_custom_target (
-   gemmi_lib
-   DEPENDS ${PROJECT_SOURCE_DIR}/extern/buildGEMMI
-)
-
 ### GetOpt_port
 include_directories ( ${CMAKE_SOURCE_DIR}/extern/                                         ) 
 
-### Set paths to installed dependencies
-include_directories ( ${CMAKE_SOURCE_DIR}/extern/gemmi/include                            )  
+### setup gemmi
+find_package(gemmi 0.6.2 CONFIG REQUIRED)
 
 ##########################################################################################
 ################################### Add fftw3 dependency
@@ -368,8 +344,6 @@ add_custom_command (
 					 COMMAND rm -fr ${CMAKE_SOURCE_DIR}/extern/soft-2.0/install.log.txt
 					 COMMAND rm -fr ${CMAKE_SOURCE_DIR}/extern/soft-2.0/install.err.txt
 					 COMMAND rm -fr ${PROJECT_SOURCE_DIR}/extern/buildSOFT2
-					 COMMAND rm -fr ${PROJECT_SOURCE_DIR}/extern/buildGEMMI
-					 COMMAND rm -fr ${CMAKE_SOURCE_DIR}/extern/gemmi
 					 DEPENDS "${CMAKE_SOURCE_DIR}/CMakeLists.txt"
 				     DEPENDS "${CMAKE_SOURCE_DIR}/delmeSOFT2.txt"
   					 COMMENT "Removed all files including the targets."

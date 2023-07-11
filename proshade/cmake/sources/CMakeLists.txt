@@ -10,5 +10,5 @@ add_library              ( compileObjs OBJECT ${SOURCES} ${GETOPT_SOURCE}       
 
 ##########################################################################################
 ### Add the dependencies
-add_dependencies        ( compileObjs gemmi_lib                                           )
 add_dependencies        ( compileObjs soft2_lib                                           )
+target_link_libraries   ( compileObjs PRIVATE gemmi::gemmi_cpp                            )

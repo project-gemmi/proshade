@@ -714,7 +714,7 @@ void ProSHADE_internal_mapManip::generateMapFromPDB ( gemmi::Structure pdbFile, 
     
     //================================================ Compute the theoretical map for each model
     dencalc.grid.data.clear                           ( );
-    dencalc.grid.set_size_from_spacing                ( dencalc.d_min / ( 2.0 * dencalc.rate), true );
+    dencalc.grid.set_size_from_spacing                ( dencalc.d_min / ( 2.0 * dencalc.rate), gemmi::GridSizeRounding::Up );
     for ( proshade_unsign mIt = 0; mIt < static_cast<proshade_unsign> ( pdbFile.models.size() ); mIt++ )
     {
         if ( firstModel && ( mIt != 0 ) ) { break; }
