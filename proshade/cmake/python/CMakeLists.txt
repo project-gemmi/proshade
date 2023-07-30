@@ -5,8 +5,8 @@
 ##########################################################################################
 
 ##########################################################################################
-################################### Add the PyBind11 directory
-add_subdirectory        ( ${CMAKE_SOURCE_DIR}/extern/pybind11 build                       )
+find_package(pybind11 2.10 CONFIG REQUIRED)
+message(STATUS "Found pybind11 ${pybind11_VERSION}: ${pybind11_INCLUDE_DIRS}")
 
 ##########################################################################################
 ################################### Add the PyBind11 target
@@ -34,7 +34,6 @@ endif  ( "${CMAKE_SYSTEM_NAME}" STREQUAL "Windows"  )
 
 ##########################################################################################
 ################################### Include all the required files
-include_directories     ( ${CMAKE_SOURCE_DIR}/extern/pybind11/include                     )
 include_directories     ( ${CMAKE_SOURCE_DIR}/src/proshade                                )
 include_directories     ( ${CMAKE_SOURCE_DIR}/extern                                      )
 

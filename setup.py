@@ -213,15 +213,10 @@ def modifyWindowsPath ():
 ##### Set required modules based on platform
 ##########################################################################################
 ##########################################################################################
-setupRequiresVals                                     = []
-installRequiresVals                                   = []
-
+setupRequiresVals = ['numpy','setuptools','pybind11>=2.10']
+installRequiresVals = []
 if platform.system() == "Windows":
-    setupRequiresVals                                 = ['numpy','setuptools','pypiwin32']
-    installRequiresVals                               = [ ]
-else:
-    setupRequiresVals                                 = ['numpy','setuptools']
-    installRequiresVals                               = [ ]
+    setupRequiresVals += ['pypiwin32']
 
 ##########################################################################################
 ##########################################################################################
